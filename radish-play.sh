@@ -26,6 +26,7 @@ Options:
   -o FILEPATH     Output file path
   -i ADDRESS      login mail address (radiko only)
   -p PASSWORD     login password (radiko only)
+  -v              Output volume
   -l              Show all station ID list
 _EOT_
 }
@@ -276,7 +277,8 @@ duration=0
 output=""
 login_id=""
 login_password=""
-while getopts t:s:d:o:i:p:l option; do
+volume=100
+while getopts t:s:d:o:i:p:v:l option; do
   case "${option}" in
     t)
       type="${OPTARG}"
@@ -295,6 +297,9 @@ while getopts t:s:d:o:i:p:l option; do
       ;;
     p)
       login_password="${OPTARG}"
+      ;;
+    v)
+      volume="${OPTARG}"
       ;;
     l)
       show_all_stations
@@ -347,6 +352,13 @@ else
     echo "Require \"Station ID\"" >&2
     exit 1
   fi
+fi
+echo "${volume}" | grep -q -E "^[0-9]+$"
+ret=$?
+if [ ${ret} -ne 0 ]; then
+  # -v value is invalid
+  echo "Invalid \"Output volume\"" >&2
+  exit 1
 fi
 
 # Generate default file path
@@ -420,13 +432,15 @@ if [ "${type}" = "radiko" ]; then
       -fflags +discardcorrupt \
       -headers "X-Radiko-Authtoken: ${radiko_authtoken}" \
       -i "${playlist_uri}" \
-      -nodisp
+      -nodisp \
+      -volume "${volume}"
 else
   ffplay \
       -loglevel error \
       -fflags +discardcorrupt \
       -i "${playlist_uri}" \
-      -nodisp
+      -nodisp \
+      -volume "${volume}"
 fi
 ret=$?
 if [ ${ret} -ne 0 ]; then

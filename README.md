@@ -1,5 +1,5 @@
 # radish
-[NHKラジオ らじる★らじる](https://www.nhk.or.jp/radio/) / [radiko](http://radiko.jp/) / [ListenRadio](http://listenradio.jp/) / [渋谷のラジオ](https://shiburadi.com/) で現在配信中の番組を保存するシェルスクリプトを改造し、単純に再生するようにしたものです。
+[NHKラジオ らじる★らじる](https://www.nhk.or.jp/radio/) / [radiko](http://radiko.jp/) / [ListenRadio](http://listenradio.jp/) / [渋谷のラジオ](https://shiburadi.com/) で現在配信中の番組を保存する[シェルスクリプト](https://github.com/uru2/radish)を改造し、[単純に再生するようにしたもの](https://github.com/jg1uaa/radish-play)に音量調整オプションを追加したものです。
 
 
 ## 必要なもの
@@ -22,6 +22,7 @@ $ ./radi.sh [options]
 |-i _MAIL_||ラジコプレミアム ログインメールアドレス|環境変数 `RADIKO_MAIL` でも指定可能|
 |-p _PASSWORD_||ラジコプレミアム ログインパスワード|環境変数 `RADIKO_PASSWORD` でも指定可能|
 |-o _PATH_||出力パス|未指定の場合カレントディレクトリに `放送局ID_年月日時分秒.(m4a or mp3)` というファイルを作成<br>拡張子がない場合または配信側の形式と異なる場合には拡張子を自動補完します|
+|-v _VOLUME_||出力音量|起動時の音量指定。0 が無音、100 が最大音量 (既定値)|
 |-l||放送局ID/名称表示|結果は300行以上になります、また取得は(割と)重いです|
 
 
@@ -58,6 +59,10 @@ $ ./radi.sh -t lisradi -s 30058 -d 30 -o "/hoge/foo.m4a"
 $ ./radi.sh -t shiburadi -d 30 -o "/hoge/foo.mp3"
 ```
 
+```
+音量調整
+$ ./radish-play.sh -t radiko -s HBC -v 50
+```
 
 ## 注意点
 
